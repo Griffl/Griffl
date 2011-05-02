@@ -1,0 +1,22 @@
+@import url(../reindeer/styles.css);
+
+.custom-style{ 
+	}
+	
+	
+.commentDot-style	{
+	cursor: hand;
+	background-color: yellow;
+	color: black;
+	}
+	
+	
+.v-generated-body {
+        overflow: auto;
+	}
+
+.v-generated-body .v-app {
+        height: auto;
+	}
+
+
