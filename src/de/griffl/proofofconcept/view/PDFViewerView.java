@@ -117,16 +117,18 @@ public class PDFViewerView extends Window implements Display {
 				
 				marginalRight.addComponent(commentList);
 				
+				//marginalRight.addComponent(new Label("Liste aller Kommentare"));
 				commentUserGround.addComponent(marginalRight);
 //				userGround.setWidth("100%");
 //				userGround.setHeight("100%");
 				commentUserGround.addComponent(userGround);
 				// nur zum Aussehen
+				userGround.addComponent(new Label("Liste aller User"), 0);
 				CheckBox testUser = new CheckBox("Sebastian Schneider");
 				testUser.setValue(true);
-				userGround.addComponent(testUser);
-				userGround.addComponent(new CheckBox("Stefanie Grewenig"));
-				userGround.addComponent(new CheckBox("Max Mustermann"));
+				userGround.addComponent(testUser, 1);
+				userGround.addComponent(new CheckBox("Stefanie Grewenig"), 2);
+				userGround.addComponent(new CheckBox("Max Mustermann"), 3);
 				//
 				
 //				commentUserGround.setWidth("100%");
