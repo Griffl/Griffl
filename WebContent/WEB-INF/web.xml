@@ -16,6 +16,12 @@
 			<param-name>application</param-name>
 			<param-value>de.griffl.proofofconcept.ProofofconceptApplication</param-value>
 		</init-param>
+		<init-param>
+			<description>
+			Application widgetset</description>
+			<param-name>widgetset</param-name>
+			<param-value>de.griffl.proofofconcept.widgetset.ProofofconceptWidgetset</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Proofofconcept Application</servlet-name>

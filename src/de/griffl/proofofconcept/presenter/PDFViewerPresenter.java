@@ -19,6 +19,7 @@ import com.vaadin.ui.Window;
 import de.griffl.proofofconcept.pdf.PDFDocument;
 
 public class PDFViewerPresenter implements Presenter{
+	
 
 	public interface Display{
 		public Window asWindow();
@@ -28,6 +29,9 @@ public class PDFViewerPresenter implements Presenter{
 	}
 	private Display display;
 	private Document pdfDoc;
+	
+	
+	private int currentPage = 0;
 	
 	public PDFViewerPresenter(Display display, PDFDocument doc){
 		this.display = display;
@@ -47,7 +51,8 @@ public class PDFViewerPresenter implements Presenter{
 		}
 		bind();
 		
-		Image im = pdfDoc.getPageImage(pdfDoc.getNumberOfPages()-1, GraphicsRenderingHints.SCREEN, Page.BOUNDARY_CROPBOX, 0, 1);
+		
+		Image im = pdfDoc.getPageImage(currentPage, GraphicsRenderingHints.SCREEN, Page.BOUNDARY_CROPBOX, 0, 1);
 		display.setPage(im);
 		
 	}
@@ -56,13 +61,26 @@ public class PDFViewerPresenter implements Presenter{
 		return display.asWindow();
 	}
 	
+	
 	public void bind()	{
-		
+
 		display.getForwardButton().addListener(new ClickListener(){
 
 			public void buttonClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				
+				if (currentPage < pdfDoc.getNumberOfPages()-1)	{
+					System.out.println(currentPage+" vor erhšhung - forward");
+					currentPage++;
+					System.out.println(currentPage+" nach erhšhung um eins - forward");
+					Image im = pdfDoc.getPageImage(currentPage, GraphicsRenderingHints.SCREEN, Page.BOUNDARY_CROPBOX, 0, 1);
+					display.setPage(im);
+					
+				}
+//				if (currentPage == pdfDoc.getNumberOfPages()-1)	{
+//					currentPage++;
+//					Image im = pdfDoc.getPageImage(currentPage, GraphicsRenderingHints.SCREEN, Page.BOUNDARY_CROPBOX, 0, 1);
+//					display.setPage(im);
+//					display.getForwardButton().setEnabled(false);
+//				}
 			}
 			
 		});
@@ -70,11 +88,24 @@ public class PDFViewerPresenter implements Presenter{
 		display.getBackwardButton().addListener(new ClickListener()	{
 
 			public void buttonClick(ClickEvent event) {
-				// TODO Auto-generated method stub
+				if (currentPage > 0) 	{
+					System.out.println(currentPage+" vor -1 - backward");
+					currentPage = currentPage-1;
+					System.out.println(currentPage+" nach -1 - backward");
+					Image im = pdfDoc.getPageImage(currentPage, GraphicsRenderingHints.SCREEN, Page.BOUNDARY_CROPBOX, 0, 1);
+					display.setPage(im);
+				}
+//				if (currentPage == 1)	{
+//					currentPage = currentPage-1;
+//					Image im = pdfDoc.getPageImage(currentPage, GraphicsRenderingHints.SCREEN, Page.BOUNDARY_CROPBOX, 0, 1);
+//					display.setPage(im);
+//					display.getBackwardButton().setEnabled(false);
+//				}
 				
 			}
 			
 		});
+
 	}
 
 	

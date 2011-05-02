@@ -44,6 +44,7 @@ public class ProofofconceptApplication extends Application {
 		MainWindowPresenter mwp = new MainWindowPresenter(mwv);
 		 
 		mwp.go(this);
+		setTheme("proofofconcepttheme");
 	}
 	
 	
