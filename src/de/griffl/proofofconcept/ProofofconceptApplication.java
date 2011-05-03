@@ -18,7 +18,7 @@ import de.griffl.proofofconcept.presenter.PDFViewerPresenter;
 import de.griffl.proofofconcept.view.MainWindowView;
 import de.griffl.proofofconcept.view.PDFViewerView;
 
-
+// Test
 public class ProofofconceptApplication extends Application {
 //public static final ThreadLocal<CouchDbConnector> db = new ThreadLocal<CouchDbConnector>();
 	private static  HttpClient httpClient = new StdHttpClient.Builder()

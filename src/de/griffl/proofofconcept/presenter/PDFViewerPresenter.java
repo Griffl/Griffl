@@ -50,6 +50,7 @@ public class PDFViewerPresenter implements Presenter{
 			e.printStackTrace();
 		}
 		bind();
+
 		
 		
 		Image im = pdfDoc.getPageImage(currentPage, GraphicsRenderingHints.SCREEN, Page.BOUNDARY_CROPBOX, 0, 1);

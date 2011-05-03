@@ -174,11 +174,6 @@ public class PDFViewerView extends Window implements Display {
 		Resource page = createStreamResource(currentPageIm);
 		embPage = new Embedded("Seite",page);
 		pdfLayout.addComponent(embPage);
-	
-
-		
-		//pdfGround.setIcon(page);
-		//requestRepaint();
 	}
 
 
