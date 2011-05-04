@@ -9,6 +9,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.vaadin.artur.icepush.ICEPush;
 import org.vaadin.cssinject.CSSInject;
 import org.vaadin.overlay.CustomClickableOverlay;
 import org.vaadin.overlay.CustomOverlay;
@@ -41,6 +42,8 @@ import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.griffl.proofofconcept.ProofofconceptApplication;
+import de.griffl.proofofconcept.communication.AnnotationEvent;
 import de.griffl.proofofconcept.presenter.PDFViewerPresenter.Display;
 
 public class PDFViewerView extends Window implements Display {
@@ -64,14 +67,14 @@ public class PDFViewerView extends Window implements Display {
 	Embedded embPage;
 	
 	//private static final Logger logger = Logger.getLogger(PDFViewerView.class.getName());
-	private Application app;
+	private ProofofconceptApplication app;
 	
-	public PDFViewerView(String name, Application app){
+	public PDFViewerView(String name,ICEPush push, ProofofconceptApplication app){
 				super(name);
-		
+				
 				setTheme("proofofconcepttheme");
 				//pdfLayout.setStyleName("v-generated-body");
-
+				addComponent(push);
 				// Header with Applicationname
 				Label appName = new Label("griffl");
 				appName.setHeight("20px");
@@ -214,6 +217,8 @@ public class PDFViewerView extends Window implements Display {
 				commentID++;
 			
 			comment.getParent().removeWindow(comment);
+				app.eventController.fireEventUpdated(
+						new AnnotationEvent(xposRel, yposRel,xpos, ypos,commentID,commentContent));
 				
 			}
 
@@ -228,7 +233,7 @@ public class PDFViewerView extends Window implements Display {
 		
 	}
 	
-	private void creatCommentDot(int xposRel, int yposRel) {
+	public void creatCommentDot(int xposRel, int yposRel) {
 //		Button commentDot = new Button (""+commentID);
 //		pdfLayout.addComponent(commentDot, "top:"+xpos+"px; left:"+ypos+"px");
 //		cssPdf.setValue(".custom-style { background-color: red; }");
