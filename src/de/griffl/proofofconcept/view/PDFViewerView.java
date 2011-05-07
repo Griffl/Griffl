@@ -44,6 +44,8 @@ import com.vaadin.ui.Window;
 
 import de.griffl.proofofconcept.ProofofconceptApplication;
 import de.griffl.proofofconcept.communication.AnnotationEvent;
+import de.griffl.proofofconcept.communication.User;
+import de.griffl.proofofconcept.pdf.PDFAnnotation;
 import de.griffl.proofofconcept.presenter.PDFViewerPresenter.Display;
 
 public class PDFViewerView extends Window implements Display {
@@ -215,10 +217,20 @@ public class PDFViewerView extends Window implements Display {
 				creatCommentDot(xposRel, yposRel);
 				
 				commentID++;
-			
+				PDFAnnotation anno = new PDFAnnotation();
+					anno.setAnnotationID(commentID);
+					anno.setCommentContent(commentContent);
+					anno.setxPosAbs(xpos);
+					anno.setyPosAbs(ypos);
+					anno.setxPosRel(xposRel);
+					anno.setyPosRel(yposRel);
+					anno.setUser((User) app.getUser());
 			comment.getParent().removeWindow(comment);
+			
+			// in die Datenbank schreiben
+			
 				app.eventController.fireEventUpdated(
-						new AnnotationEvent(xposRel, yposRel,xpos, ypos,commentID,commentContent));
+						new AnnotationEvent(anno));
 				
 			}
 

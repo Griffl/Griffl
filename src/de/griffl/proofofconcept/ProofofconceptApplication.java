@@ -18,26 +18,33 @@ import de.griffl.proofofconcept.communication.AnnotationEvent;
 import de.griffl.proofofconcept.communication.EventController;
 import de.griffl.proofofconcept.communication.EventController.EventUpdateListener;
 import de.griffl.proofofconcept.communication.User;
+import de.griffl.proofofconcept.db.AnnotationRepository;
 import de.griffl.proofofconcept.db.DBsettings;
 import de.griffl.proofofconcept.db.PDFRepository;
+import de.griffl.proofofconcept.pdf.PDFAnnotation;
 import de.griffl.proofofconcept.pdf.PDFDocument;
 import de.griffl.proofofconcept.presenter.MainWindowPresenter;
 import de.griffl.proofofconcept.presenter.PDFViewerPresenter;
 import de.griffl.proofofconcept.view.MainWindowView;
 import de.griffl.proofofconcept.view.PDFViewerView;
 
-// Test
-// 2nd Test comment
+
 public class ProofofconceptApplication extends Application implements EventUpdateListener{
-//public static final ThreadLocal<CouchDbConnector> db = new ThreadLocal<CouchDbConnector>();
-	private static  HttpClient httpClient = new StdHttpClient.Builder()
+	
+	private static   HttpClient httpClient = new StdHttpClient.Builder()
 	.host(DBsettings.HOST)
 	.port(DBsettings.PORT)
 	.build();
 	
 	private static CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-	public static CouchDbConnector dbC = new StdCouchDbConnector(DBsettings.DATABASE, dbInstance);
-	public static PDFRepository repository = new PDFRepository(PDFDocument.class, dbC);
+	private static CouchDbConnector dbC = new StdCouchDbConnector(DBsettings.DATABASE, dbInstance);
+	
+	public static final ThreadLocal<PDFRepository>  pdfRepository = new ThreadLocal<PDFRepository>();
+	public static final ThreadLocal<AnnotationRepository>annotationRepository = new ThreadLocal<AnnotationRepository>();
+	
+	//public static final PDFRepository  pdfRepository = new PDFRepository(PDFDocument.class, dbC);
+	//public static final AnnotationRepository annotationRepository = new AnnotationRepository(PDFAnnotation.class, dbC);
+
 	
 	public EventController eventController;
 	private ICEPush push;
@@ -49,13 +56,9 @@ public class ProofofconceptApplication extends Application implements EventUpdat
 	
 	@Override
 	public void init() {
-		 HttpClient httpClient = new StdHttpClient.Builder()
-		.host(DBsettings.HOST)
-		.port(DBsettings.PORT)
-		.build();
-		CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-		CouchDbConnector dbC = new StdCouchDbConnector(DBsettings.DATABASE, dbInstance);
-		//db.set(dbC);
+		 pdfRepository.set(new PDFRepository(PDFDocument.class, dbC));
+		 annotationRepository.set(new AnnotationRepository(PDFAnnotation.class, dbC));
+		 
 		
 		number ++;
 		
@@ -73,9 +76,9 @@ public class ProofofconceptApplication extends Application implements EventUpdat
 	
 	public Window getWindow(String name){
 		
-		if(super.getWindow(name) == null && repository.contains(name)){
+		if(super.getWindow(name) == null && pdfRepository.get().contains(name)){
 			
-			PDFDocument doc = repository.get(name);
+			PDFDocument doc = pdfRepository.get().get(name);
 			pvv = new PDFViewerView(name, push, this);
 			PDFViewerPresenter pvp = new PDFViewerPresenter(pvv, doc);
 			
@@ -92,8 +95,8 @@ public class ProofofconceptApplication extends Application implements EventUpdat
 
 	public void eventUpdated(ProofofconceptApplication app,
 			AnnotationEvent event) {
-		
-		pvv.creatCommentDot(event.getxPosRel(), event.getyPosRel());
+		PDFAnnotation anno = event.getAnnotation();
+		pvv.creatCommentDot(anno.getxPosRel(), anno.getyPosRel());
 		User u = (User) app.getUser();
 		logger.info("eventUpdate called from app: "+u.getName());
 		push.push();

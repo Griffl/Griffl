@@ -7,6 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class PDFDocument extends CouchDbDocument {
 	private String id;
 	private String revision;
+	private String type = "pdfdocument";
 	private byte[] document;
 	
 	@JsonProperty("_id")

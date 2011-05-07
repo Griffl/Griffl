@@ -16,9 +16,13 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Window;
 
+import de.griffl.proofofconcept.communication.AnnotationMethods;
+import de.griffl.proofofconcept.communication.User;
+import de.griffl.proofofconcept.communication.UserMethods;
+import de.griffl.proofofconcept.pdf.PDFAnnotation;
 import de.griffl.proofofconcept.pdf.PDFDocument;
 
-public class PDFViewerPresenter implements Presenter{
+public class PDFViewerPresenter implements Presenter, UserMethods, AnnotationMethods{
 	
 
 	public interface Display{
@@ -63,7 +67,7 @@ public class PDFViewerPresenter implements Presenter{
 	}
 	
 	
-	public void bind()	{
+	private void bind()	{
 
 		display.getForwardButton().addListener(new ClickListener(){
 
@@ -107,6 +111,30 @@ public class PDFViewerPresenter implements Presenter{
 			
 		});
 
+	}
+	public void showNewAnnotation(PDFAnnotation anno) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void updateAnnotation(PDFAnnotation anno) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void deleteAnnotation(PDFAnnotation anno) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void showNewUser(User user) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void updateLoginStatus(User user, boolean loggedIn) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void removeUser(User user) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	
