@@ -4,7 +4,11 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.support.CouchDbRepositorySupport;
 
 import de.griffl.proofofconcept.pdf.PDFDocument;
-
+/**
+ * 
+ * @author Sebastian Schneider
+ *
+ */
 public class PDFRepository extends CouchDbRepositorySupport<PDFDocument> {
 
 	public PDFRepository(Class<PDFDocument> type, CouchDbConnector db) {

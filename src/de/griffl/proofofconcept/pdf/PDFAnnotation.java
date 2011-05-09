@@ -6,7 +6,11 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.CouchDbDocument;
 
 import de.griffl.proofofconcept.communication.User;
-
+/**
+ * 
+ * @author Sebastian Schneider
+ *
+ */
 public class PDFAnnotation extends CouchDbDocument {
 	private String id;	// Unique ID in the database
 	private String revision;

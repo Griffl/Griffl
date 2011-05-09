@@ -8,7 +8,11 @@ import org.ektorp.support.GenerateView;
 
 import de.griffl.proofofconcept.pdf.*;
 
-
+/**
+ * 
+ * @author Sebastian Schneider
+ *
+ */
 public class AnnotationRepository extends CouchDbRepositorySupport<PDFAnnotation> {
 
 	public AnnotationRepository(Class<PDFAnnotation> type,

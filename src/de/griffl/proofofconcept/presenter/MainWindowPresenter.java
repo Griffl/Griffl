@@ -99,7 +99,7 @@ public class MainWindowPresenter implements Presenter, Serializable{
 				
 				pdfDoc.setDocument(binaryFile);
 				
-				BlackboardManager.INSTANCE.addDocument(pdfDoc, app);
+				BlackboardManager.INSTANCE.addDocument(pdfDoc);
 			
 				String id = pdfDoc.getId();
 				

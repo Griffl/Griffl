@@ -2,7 +2,11 @@ package de.griffl.proofofconcept.communication;
 
 import java.awt.Color;
 import java.io.Serializable;
-
+/**
+ * 
+ * @author Sebastian Schneider
+ *
+ */
 public class User implements Serializable{
 	private String name;
 	private Color color;

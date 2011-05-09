@@ -7,9 +7,19 @@ import org.vaadin.artur.icepush.ICEPush;
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
-import de.griffl.proofofconcept.communication.NewAnnotationEvent;
-import de.griffl.proofofconcept.communication.NewAnnotationEvent.NewAnnotationListener;
+import de.griffl.proofofconcept.communication.AnnotationCreatedEvent;
+import de.griffl.proofofconcept.communication.AnnotationCreatedEvent.AnnotationCreatedListener;
+import de.griffl.proofofconcept.communication.AnnotationDeletedEvent;
+import de.griffl.proofofconcept.communication.AnnotationDeletedEvent.AnnotationDeletedListener;
+import de.griffl.proofofconcept.communication.AnnotationUpdatedEvent;
+import de.griffl.proofofconcept.communication.AnnotationUpdatedEvent.AnnotationUpdatedListener;
+import de.griffl.proofofconcept.communication.PDFdeletedEvent;
+import de.griffl.proofofconcept.communication.PDFdeletedEvent.PDFdeletedListener;
 import de.griffl.proofofconcept.communication.User;
+import de.griffl.proofofconcept.communication.UserLoggedInEvent;
+import de.griffl.proofofconcept.communication.UserLoggedInEvent.UserLoggedInListener;
+import de.griffl.proofofconcept.communication.UserLoggedOffEvent;
+import de.griffl.proofofconcept.communication.UserLoggedOffEvent.UserLoggedOffListener;
 
 import de.griffl.proofofconcept.pdf.BlackboardManager;
 import de.griffl.proofofconcept.pdf.PDFAnnotation;
@@ -19,8 +29,18 @@ import de.griffl.proofofconcept.presenter.PDFViewerPresenter;
 import de.griffl.proofofconcept.view.MainWindowView;
 import de.griffl.proofofconcept.view.PDFViewerView;
 
-
-public class ProofofconceptApplication extends Application implements NewAnnotationListener{
+/**
+ * 
+ * @author Sebastian Schneider
+ *
+ */
+public class ProofofconceptApplication extends Application implements 
+												AnnotationCreatedListener, 
+												AnnotationUpdatedListener, 
+												AnnotationDeletedListener, 
+												PDFdeletedListener, 
+												UserLoggedInListener, 
+												UserLoggedOffListener{
 	
 	private ICEPush push;
 	public PDFViewerView pvv;
@@ -74,10 +94,40 @@ public class ProofofconceptApplication extends Application implements NewAnnotat
 //	}
 
 
-	public void newAnnotationCreated(NewAnnotationEvent event) {
+	public void annotationCreated(AnnotationCreatedEvent event) {
 		PDFAnnotation anno = event.getPDFAnnotation();
 		pvv.creatCommentDot(anno.getxPosRel(), anno.getyPosRel());
 		push.push();
+	}
+
+
+	public void userLoggedOff(UserLoggedOffEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void annotationDeleted(AnnotationDeletedEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void pdfDeleted(PDFdeletedEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void userLoggedIn(UserLoggedInEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void annotationUpdated(AnnotationUpdatedEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
