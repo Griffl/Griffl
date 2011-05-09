@@ -2,25 +2,16 @@ package de.griffl.proofofconcept;
 
 import java.awt.Color;
 import java.util.logging.Logger;
-
-import org.ektorp.CouchDbConnector;
-import org.ektorp.CouchDbInstance;
-import org.ektorp.http.HttpClient;
-import org.ektorp.http.StdHttpClient;
-import org.ektorp.impl.StdCouchDbConnector;
-import org.ektorp.impl.StdCouchDbInstance;
 import org.vaadin.artur.icepush.ICEPush;
 
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
-import de.griffl.proofofconcept.communication.AnnotationEvent;
-import de.griffl.proofofconcept.communication.EventController;
-import de.griffl.proofofconcept.communication.EventController.EventUpdateListener;
+import de.griffl.proofofconcept.communication.NewAnnotationEvent;
+import de.griffl.proofofconcept.communication.NewAnnotationEvent.NewAnnotationListener;
 import de.griffl.proofofconcept.communication.User;
-import de.griffl.proofofconcept.db.AnnotationRepository;
-import de.griffl.proofofconcept.db.DBsettings;
-import de.griffl.proofofconcept.db.PDFRepository;
+
+import de.griffl.proofofconcept.pdf.BlackboardManager;
 import de.griffl.proofofconcept.pdf.PDFAnnotation;
 import de.griffl.proofofconcept.pdf.PDFDocument;
 import de.griffl.proofofconcept.presenter.MainWindowPresenter;
@@ -29,24 +20,8 @@ import de.griffl.proofofconcept.view.MainWindowView;
 import de.griffl.proofofconcept.view.PDFViewerView;
 
 
-public class ProofofconceptApplication extends Application implements EventUpdateListener{
+public class ProofofconceptApplication extends Application implements NewAnnotationListener{
 	
-	private static   HttpClient httpClient = new StdHttpClient.Builder()
-	.host(DBsettings.HOST)
-	.port(DBsettings.PORT)
-	.build();
-	
-	private static CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-	private static CouchDbConnector dbC = new StdCouchDbConnector(DBsettings.DATABASE, dbInstance);
-	
-	public static final ThreadLocal<PDFRepository>  pdfRepository = new ThreadLocal<PDFRepository>();
-	public static final ThreadLocal<AnnotationRepository>annotationRepository = new ThreadLocal<AnnotationRepository>();
-	
-	//public static final PDFRepository  pdfRepository = new PDFRepository(PDFDocument.class, dbC);
-	//public static final AnnotationRepository annotationRepository = new AnnotationRepository(PDFAnnotation.class, dbC);
-
-	
-	public EventController eventController;
 	private ICEPush push;
 	public PDFViewerView pvv;
 	
@@ -56,18 +31,14 @@ public class ProofofconceptApplication extends Application implements EventUpdat
 	
 	@Override
 	public void init() {
-		 pdfRepository.set(new PDFRepository(PDFDocument.class, dbC));
-		 annotationRepository.set(new AnnotationRepository(PDFAnnotation.class, dbC));
-		 
 		
 		number ++;
 		
 		setUser(new User("Benutzer "+number, Color.BLACK));
-		eventController = new EventController(this);
 		push = new ICEPush();
 		
 		MainWindowView mwv = new MainWindowView("Hauptfenster");
-		MainWindowPresenter mwp = new MainWindowPresenter(mwv);
+		MainWindowPresenter mwp = new MainWindowPresenter(mwv, this);
 		 
 		mwp.go(this);
 		setTheme("proofofconcepttheme");
@@ -76,9 +47,9 @@ public class ProofofconceptApplication extends Application implements EventUpdat
 	
 	public Window getWindow(String name){
 		
-		if(super.getWindow(name) == null && pdfRepository.get().contains(name)){
+		if(super.getWindow(name) == null && BlackboardManager.INSTANCE.containsPDF(name)){
 			
-			PDFDocument doc = pdfRepository.get().get(name);
+			PDFDocument doc = BlackboardManager.INSTANCE.getDocument(name, this);
 			pvv = new PDFViewerView(name, push, this);
 			PDFViewerPresenter pvp = new PDFViewerPresenter(pvv, doc);
 			
@@ -93,13 +64,22 @@ public class ProofofconceptApplication extends Application implements EventUpdat
 	}
 
 
-	public void eventUpdated(ProofofconceptApplication app,
-			AnnotationEvent event) {
-		PDFAnnotation anno = event.getAnnotation();
+//	public void eventUpdated(ProofofconceptApplication app,
+//			AnnotationEvent event) {
+//		PDFAnnotation anno = event.getAnnotation();
+//		pvv.creatCommentDot(anno.getxPosRel(), anno.getyPosRel());
+//		User u = (User) app.getUser();
+//		logger.info("eventUpdate called from app: "+u.getName());
+//		push.push();
+//	}
+
+
+	public void newAnnotationCreated(NewAnnotationEvent event) {
+		PDFAnnotation anno = event.getPDFAnnotation();
 		pvv.creatCommentDot(anno.getxPosRel(), anno.getyPosRel());
-		User u = (User) app.getUser();
-		logger.info("eventUpdate called from app: "+u.getName());
 		push.push();
 	}
+
+
 
 }

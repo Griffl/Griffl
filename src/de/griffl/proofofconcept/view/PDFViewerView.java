@@ -43,8 +43,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import de.griffl.proofofconcept.ProofofconceptApplication;
-import de.griffl.proofofconcept.communication.AnnotationEvent;
 import de.griffl.proofofconcept.communication.User;
+import de.griffl.proofofconcept.pdf.BlackboardManager;
 import de.griffl.proofofconcept.pdf.PDFAnnotation;
 import de.griffl.proofofconcept.presenter.PDFViewerPresenter.Display;
 
@@ -70,10 +70,10 @@ public class PDFViewerView extends Window implements Display {
 	
 	//private static final Logger logger = Logger.getLogger(PDFViewerView.class.getName());
 	private ProofofconceptApplication app;
-	
+	private String name;
 	public PDFViewerView(String name,ICEPush push, ProofofconceptApplication app){
 				super(name);
-				
+				this.name = name;
 				setTheme("proofofconcepttheme");
 				//pdfLayout.setStyleName("v-generated-body");
 				addComponent(push);
@@ -218,6 +218,7 @@ public class PDFViewerView extends Window implements Display {
 				
 				commentID++;
 				PDFAnnotation anno = new PDFAnnotation();
+					anno.setPdfid(name);
 					anno.setAnnotationID(commentID);
 					anno.setCommentContent(commentContent);
 					anno.setxPosAbs(xpos);
@@ -228,9 +229,8 @@ public class PDFViewerView extends Window implements Display {
 			comment.getParent().removeWindow(comment);
 			
 			// in die Datenbank schreiben
+			BlackboardManager.INSTANCE.addAnnotation(anno);
 			
-				app.eventController.fireEventUpdated(
-						new AnnotationEvent(anno));
 				
 			}
 
