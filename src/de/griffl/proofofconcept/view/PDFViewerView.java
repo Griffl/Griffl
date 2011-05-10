@@ -247,6 +247,7 @@ public class PDFViewerView extends Window implements Display {
 		commentDot.setXOffset(xposRel);
 		commentDot.setYOffset(yposRel);
 		
+		
 		commentDot.setClickListener(new OverlayClickListener() {
 
 			public void overlayClicked(CustomClickableOverlay overlay) {
