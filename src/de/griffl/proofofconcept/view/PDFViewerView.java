@@ -53,20 +53,23 @@ public class PDFViewerView extends Window implements Display {
 	private Button forward = new Button(">");
 	private Button backward = new Button ("<");
 	
+	private AbsoluteLayout pdfLayout = new AbsoluteLayout();
+	
+	private HorizontalSplitPanel workingGround = new HorizontalSplitPanel();
+	private HorizontalSplitPanel commentUserGround = new HorizontalSplitPanel();
+	
 	private final Panel marginalRight = new Panel();
+	
+	private VerticalLayout userGround = new VerticalLayout();
+	
 	private int commentID = 1;
 	private Tree commentList = new Tree();
 	
-	HorizontalSplitPanel workingGround = new HorizontalSplitPanel();
-	HorizontalSplitPanel commentUserGround = new HorizontalSplitPanel();
 	
-	VerticalLayout userGround = new VerticalLayout();
+	private Embedded embPage;
 	
-	AbsoluteLayout pdfLayout = new AbsoluteLayout();
 	
 	VerticalLayout basicVerticalLayout = new VerticalLayout();
-	
-	Embedded embPage;
 	
 	//private static final Logger logger = Logger.getLogger(PDFViewerView.class.getName());
 	private ProofofconceptApplication app;
@@ -122,10 +125,7 @@ public class PDFViewerView extends Window implements Display {
 				
 				marginalRight.addComponent(commentList);
 				
-				//marginalRight.addComponent(new Label("Liste aller Kommentare"));
 				commentUserGround.addComponent(marginalRight);
-//				userGround.setWidth("100%");
-//				userGround.setHeight("100%");
 				commentUserGround.addComponent(userGround);
 				// nur zum Aussehen
 				userGround.addComponent(new Label("Liste aller User"), 0);
@@ -145,26 +145,7 @@ public class PDFViewerView extends Window implements Display {
 
 				addComponent(basicVerticalLayout);
 				
-				//pdfLayout.addComponent(pdfGround);
-				// Listener for pdfGround
-				pdfLayout.addListener(new LayoutClickListener() {
-
-					public void layoutClick(LayoutClickEvent event) {
-						int xpos = event.getClientX();
-						int ypos = event.getClientY();
-						
-						int xposRel = event.getRelativeX();
-						int yposRel = event.getRelativeY();
-						
-						openCommentWindow(xpos, ypos, xposRel, yposRel);
-						
-					}
-					
-				});
-				
-	
-				this.app = app;	
-				
+				this.app = app;		
 		}
 
 
@@ -192,105 +173,31 @@ public class PDFViewerView extends Window implements Display {
 	}
 	
 	
-	
-	
-	private void openCommentWindow(final int xpos, final int ypos, final int xposRel, final int yposRel) {
-		
-		final Window comment = new Window("Kommentar");
-		comment.setHeight("200px");
-		comment.setWidth("200px");
-		
-		final TextArea editor = new TextArea();
-		editor.setValue("Schreiben Sie ein Kommentar");
-
-		final Button saveComment = new Button("speichern");
-		
-		saveComment.addListener(new ClickListener() {
-			public void buttonClick(com.vaadin.ui.Button.ClickEvent event) {
-				String commentContent = (String) "("+commentID+") "+ editor.getValue();
-				String commentHead =  new String ("Kommentar Nr: " + commentID+ " erstellt von Sebastian Schneider am 02.05.2011");
-				commentList.addItem(commentHead);
-				commentList.addItem(commentContent);
-				commentList.setParent(commentContent, commentHead);
-				commentList.setChildrenAllowed(commentContent, false);
-				
-				creatCommentDot(xposRel, yposRel);
-				
-				commentID++;
-				PDFAnnotation anno = new PDFAnnotation();
-					anno.setPdfid(name);
-					anno.setAnnotationID(commentID);
-					anno.setCommentContent(commentContent);
-					anno.setxPosAbs(xpos);
-					anno.setyPosAbs(ypos);
-					anno.setxPosRel(xposRel);
-					anno.setyPosRel(yposRel);
-					anno.setUser((User) app.getUser());
-			comment.getParent().removeWindow(comment);
-			
-			// in die Datenbank schreiben
-			BlackboardManager.INSTANCE.addAnnotation(anno);
-			
-				
-			}
-
-		});
-		
-		comment.addComponent(editor);
-		comment.addComponent(saveComment);
-
-		comment.setPositionX(xpos);
-		comment.setPositionY(ypos);
-		addWindow(comment);
-		
+	public AbsoluteLayout getPDFLayout()	{
+		return pdfLayout;
 	}
 	
-	public void creatCommentDot(int xposRel, int yposRel) {
-//		Button commentDot = new Button (""+commentID);
-//		pdfLayout.addComponent(commentDot, "top:"+xpos+"px; left:"+ypos+"px");
-//		cssPdf.setValue(".custom-style { background-color: red; }");
-//		pdfLayout.addComponent(cssPdf);
-		//spdfGround.setStyleName("v-generated-body");
-		
-		Resource commentIcon = new ClassResource("/Users/Taffy/Documents/Griffel/PoC_Griffl/Griffl/WebContent/VAADIN/themes/proofofconcepttheme/images/icon.png", app);
-		String commentText = new String(""+ commentID);
-		
-		TextOverlay commentDot = new TextOverlay(embPage, commentText);
-		commentDot.getOverlay().setStyleName("commentDot-style");
-		
-		commentDot.setComponentAnchor(Alignment.TOP_LEFT);
-		commentDot.setOverlayAnchor(Alignment.TOP_LEFT);
-		
-		commentDot.setXOffset(xposRel);
-		commentDot.setYOffset(yposRel);
-		
-		
-		commentDot.setClickListener(new OverlayClickListener() {
-
-			public void overlayClicked(CustomClickableOverlay overlay) {
-				final Window comment = new Window("Kommentar");
-				comment.setHeight("200px");
-				comment.setWidth("200px");
-				
-				final TextArea editor = new TextArea();
-				editor.setValue("hier");
-				
-				comment.addComponent(editor);
-				
-				comment.setPositionX(overlay.getXOffset());
-				comment.setPositionY(overlay.getYOffset());
-				addWindow(comment);
-				
-			}
-			
-		});	
-		pdfLayout.addComponent(commentDot);
-		//pdfLayout.addComponent(nothing);
-
-		
-		
+	public Embedded getEmbPage()	{
+		return embPage;
 	}
 	
+	public Tree getCommentList()	{
+		return commentList;
+	}
+	
+//	public HorizontalSplitPanel getWorkingGround()	{
+//		return workingGround;
+//	}
+//	
+//	public HorizontalSplitPanel getCommentUserGround()	{
+//		return commentUserGround;
+//	}
+//	
+//	public VerticalLayout getUserGround()	{
+//		return userGround;
+//	}
+	
+
 	
 	private Resource createStreamResource(final Image im) {
 		StreamResource.StreamSource curIm = new StreamResource.StreamSource() {

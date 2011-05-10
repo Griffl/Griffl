@@ -44,6 +44,7 @@ public class ProofofconceptApplication extends Application implements
 	
 	private ICEPush push;
 	public PDFViewerView pvv;
+	public PDFViewerPresenter pvp;
 	
 	private static int number = 0;
 	
@@ -71,7 +72,7 @@ public class ProofofconceptApplication extends Application implements
 			
 			PDFDocument doc = BlackboardManager.INSTANCE.getDocument(name, this);
 			pvv = new PDFViewerView(name, push, this);
-			PDFViewerPresenter pvp = new PDFViewerPresenter(pvv, doc);
+			PDFViewerPresenter pvp = new PDFViewerPresenter(pvv, doc, this, name);
 			
 			Window pdfWindow = pvp.go(this);	
 			addWindow(pdfWindow);
@@ -96,7 +97,7 @@ public class ProofofconceptApplication extends Application implements
 
 	public void annotationCreated(AnnotationCreatedEvent event) {
 		PDFAnnotation anno = event.getPDFAnnotation();
-		pvv.creatCommentDot(anno.getxPosRel(), anno.getyPosRel());
+		pvp.createAnnoDot(anno.getAnnotationID(), anno.getxPosRel(), anno.getyPosRel());
 		push.push();
 	}
 
