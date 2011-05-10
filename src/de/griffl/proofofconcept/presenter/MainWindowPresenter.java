@@ -23,6 +23,7 @@ import com.vaadin.ui.Upload.StartedEvent;
 import com.vaadin.ui.Upload.SucceededEvent;
 
 import de.griffl.proofofconcept.ProofofconceptApplication;
+import de.griffl.proofofconcept.pdf.BlackboardManager;
 import de.griffl.proofofconcept.pdf.PDFDocument;
 
 
@@ -40,11 +41,13 @@ public class MainWindowPresenter implements Presenter, Serializable{
 	private static Logger logger = Logger.getLogger(MainWindowPresenter.class.getName());
 	private Display display;
 	private Upload upload;
-	public MainWindowPresenter(Display display){
+	private ProofofconceptApplication app;
+	public MainWindowPresenter(Display display, ProofofconceptApplication app){
 		
 		PDFReceiver receiver = new PDFReceiver();
 		upload = new Upload(null, receiver);
 		this.display = display;
+		this.app = app;
 		
 		this.display.addUpload(upload);
 		bind();
@@ -95,9 +98,9 @@ public class MainWindowPresenter implements Presenter, Serializable{
 				PDFDocument pdfDoc = new PDFDocument();
 				
 				pdfDoc.setDocument(binaryFile);
-				ProofofconceptApplication.dbC.create(pdfDoc);
 				
-				
+				BlackboardManager.INSTANCE.addDocument(pdfDoc);
+			
 				String id = pdfDoc.getId();
 				
 				callPDFviewer(id);

@@ -9,6 +9,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.vaadin.artur.icepush.ICEPush;
 import org.vaadin.cssinject.CSSInject;
 import org.vaadin.overlay.CustomClickableOverlay;
 import org.vaadin.overlay.CustomOverlay;
@@ -41,6 +42,10 @@ import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.griffl.proofofconcept.ProofofconceptApplication;
+import de.griffl.proofofconcept.communication.User;
+import de.griffl.proofofconcept.pdf.BlackboardManager;
+import de.griffl.proofofconcept.pdf.PDFAnnotation;
 import de.griffl.proofofconcept.presenter.PDFViewerPresenter.Display;
 
 public class PDFViewerView extends Window implements Display {
@@ -64,14 +69,14 @@ public class PDFViewerView extends Window implements Display {
 	Embedded embPage;
 	
 	//private static final Logger logger = Logger.getLogger(PDFViewerView.class.getName());
-	private Application app;
-	
-	public PDFViewerView(String name, Application app){
+	private ProofofconceptApplication app;
+	private String name;
+	public PDFViewerView(String name,ICEPush push, ProofofconceptApplication app){
 				super(name);
-		
+				this.name = name;
 				setTheme("proofofconcepttheme");
 				//pdfLayout.setStyleName("v-generated-body");
-
+				addComponent(push);
 				// Header with Applicationname
 				Label appName = new Label("griffl");
 				appName.setHeight("20px");
@@ -212,8 +217,20 @@ public class PDFViewerView extends Window implements Display {
 				creatCommentDot(xposRel, yposRel);
 				
 				commentID++;
-			
+				PDFAnnotation anno = new PDFAnnotation();
+					anno.setPdfid(name);
+					anno.setAnnotationID(commentID);
+					anno.setCommentContent(commentContent);
+					anno.setxPosAbs(xpos);
+					anno.setyPosAbs(ypos);
+					anno.setxPosRel(xposRel);
+					anno.setyPosRel(yposRel);
+					anno.setUser((User) app.getUser());
 			comment.getParent().removeWindow(comment);
+			
+			// in die Datenbank schreiben
+			BlackboardManager.INSTANCE.addAnnotation(anno);
+			
 				
 			}
 
@@ -228,7 +245,7 @@ public class PDFViewerView extends Window implements Display {
 		
 	}
 	
-	private void creatCommentDot(int xposRel, int yposRel) {
+	public void creatCommentDot(int xposRel, int yposRel) {
 //		Button commentDot = new Button (""+commentID);
 //		pdfLayout.addComponent(commentDot, "top:"+xpos+"px; left:"+ypos+"px");
 //		cssPdf.setValue(".custom-style { background-color: red; }");

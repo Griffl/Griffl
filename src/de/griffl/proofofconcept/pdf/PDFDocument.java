@@ -3,10 +3,15 @@ package de.griffl.proofofconcept.pdf;
 
 import org.ektorp.support.CouchDbDocument;
 import org.codehaus.jackson.annotate.JsonProperty;
-
+/**
+ * 
+ * @author Sebastian Schneider
+ *
+ */
 public class PDFDocument extends CouchDbDocument {
 	private String id;
 	private String revision;
+	private String type = "pdfdocument";
 	private byte[] document;
 	
 	@JsonProperty("_id")
