@@ -32,6 +32,15 @@ public class PDFAnnotation extends CouchDbDocument {
 	
 	private User user;
 	
+	@JsonProperty("type")
+	public void setType(String type){
+		this.type = "annotation";
+	}
+	@JsonProperty("type")
+	public String getType(){
+		return type;
+	}
+	
 	public int getxPosRel() {
 		return xPosRel;
 	}
@@ -88,7 +97,6 @@ public class PDFAnnotation extends CouchDbDocument {
 	public void setPdfid(String pdfid){
 		this.pdfid = pdfid;
 	}
-	
 	public String getPdfid(){
 		return pdfid;
 	}

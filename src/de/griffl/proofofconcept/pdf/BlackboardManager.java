@@ -1,6 +1,8 @@
 package de.griffl.proofofconcept.pdf;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.ektorp.CouchDbConnector;
@@ -21,6 +23,7 @@ import de.griffl.proofofconcept.communication.AnnotationDeletedEvent.AnnotationD
 import de.griffl.proofofconcept.communication.AnnotationUpdatedEvent;
 import de.griffl.proofofconcept.communication.AnnotationUpdatedEvent.AnnotationUpdatedListener;
 import de.griffl.proofofconcept.communication.PDFdeletedEvent.PDFdeletedListener;
+import de.griffl.proofofconcept.communication.User;
 import de.griffl.proofofconcept.communication.UserLoggedInEvent;
 import de.griffl.proofofconcept.communication.UserLoggedInEvent.UserLoggedInListener;
 import de.griffl.proofofconcept.communication.UserLoggedOffEvent;
@@ -94,8 +97,13 @@ public enum BlackboardManager implements ChangeListener{
 		pdfRepository.remove(doc);
 		//blackboardManager.remove(doc.getId());
 	}
+	private int getAnnotationID(String pdfID){
+		return 0;
+	}
 	public synchronized void addAnnotation(PDFAnnotation pdfAnno){
-		
+		int annotationID = getAnnotationID(pdfAnno.getPdfid());
+		pdfAnno.setDateCreated(new Date());
+		pdfAnno.setAnnotationID(annotationID);
 		annotationRepository.add(pdfAnno);
 		logger.info("PDFAnnotation ID="+pdfAnno.getId()+ " zu PDF_ID="+pdfAnno.getPdfid()+" hizugefügt");
 		blackboardManager.get(pdfAnno.getPdfid()).fire(new AnnotationCreatedEvent(pdfAnno));
@@ -110,6 +118,9 @@ public enum BlackboardManager implements ChangeListener{
 		return pdfRepository.contains(pdfID);
 	}
 
+//	public List<User> getUsers(String pdfID){
+//		//annotationRepository.
+//	}
 	public void changes(ChangeEvent event) {
 		logger.info("changes Methode gerufen");
 		String docId = event.getDocId();

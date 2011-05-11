@@ -62,7 +62,7 @@ public class DBTest {
 		
 		System.out.println("PDF_ID="+pdfDoc.getId());
 		
-		for(int i = 1; i<10; i++){
+		for(int i = 1; i<13; i++){
 			PDFAnnotation anno = new PDFAnnotation();
 			anno.setPdfid(pdfDoc.getId());
 			anno.setCommentContent("Kommentar "+i);
@@ -72,7 +72,9 @@ public class DBTest {
 			System.out.println("Kommentar "+i+" hinzugefŸgt");
 		}
 		annotations = test.annotationRepository.findByPdfid(pdfDoc.getId());
+		int maxAnno = test.annotationRepository.getMaxAnnotationID(pdfDoc.getId());
 		System.out.println("PDF_ID="+pdfDoc.getId()+" hat "+annotations.size()+" Annotationen");
+		System.out.println("maximale annotationID="+maxAnno);
 		} finally {
 			
 		}
