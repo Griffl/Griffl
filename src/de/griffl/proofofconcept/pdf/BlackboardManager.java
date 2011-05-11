@@ -105,7 +105,7 @@ public enum BlackboardManager implements ChangeListener{
 		pdfAnno.setDateCreated(new Date());
 		pdfAnno.setAnnotationID(annotationID);
 		annotationRepository.add(pdfAnno);
-		logger.info("PDFAnnotation ID="+pdfAnno.getId()+ " zu PDF_ID="+pdfAnno.getPdfid()+" hizugefügt");
+		logger.info("PDFAnnotation ID="+pdfAnno.getId()+ " zu PDF_ID="+pdfAnno.getPdfid()+" hinzugefügt");
 		blackboardManager.get(pdfAnno.getPdfid()).fire(new AnnotationCreatedEvent(pdfAnno));
 		
 	}
