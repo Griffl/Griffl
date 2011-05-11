@@ -33,4 +33,8 @@ public class User implements Serializable{
 	public Color getColor(){
 		return color;
 	}
+	
+	public String toString(){
+		return name;
+	}
 }
