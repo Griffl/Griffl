@@ -61,8 +61,8 @@ public class AnnotationRepository extends CouchDbRepositorySupport<PDFAnnotation
 //							"emit([doc.pdfid,doc.user], null);}" +
 //					"}"
 //			reduce = "function(key, values){" +
-//					"" +
-//					"}"
+//					"var res = new Array(key.length)" +
+//					"return res;}"
 //		)
 	public List<User> getUseres(String pdfid){
 		ViewQuery v = new ViewQuery();
