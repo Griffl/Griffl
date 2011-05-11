@@ -101,7 +101,7 @@ public enum BlackboardManager implements ChangeListener{
 		return 0;
 	}
 	public synchronized void addAnnotation(PDFAnnotation pdfAnno){
-		int annotationID = getAnnotationID(pdfAnno.getPdfid());
+		int annotationID = getAnnotationID(pdfAnno.getPdfid())+1;
 		pdfAnno.setDateCreated(new Date());
 		pdfAnno.setAnnotationID(annotationID);
 		annotationRepository.add(pdfAnno);

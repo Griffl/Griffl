@@ -1,3 +1,4 @@
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +14,7 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 
+import de.griffl.proofofconcept.communication.User;
 import de.griffl.proofofconcept.db.AnnotationRepository;
 import de.griffl.proofofconcept.db.DBsettings;
 import de.griffl.proofofconcept.db.PDFRepository;
@@ -64,6 +66,8 @@ public class DBTest {
 		
 		for(int i = 1; i<13; i++){
 			PDFAnnotation anno = new PDFAnnotation();
+			int userID = i %3;
+			anno.setUser(new User("Benutzer "+userID, Color.BLUE));
 			anno.setPdfid(pdfDoc.getId());
 			anno.setCommentContent("Kommentar "+i);
 			anno.setAnnotationID(i);

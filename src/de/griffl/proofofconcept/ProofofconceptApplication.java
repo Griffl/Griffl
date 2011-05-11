@@ -1,6 +1,5 @@
 package de.griffl.proofofconcept;
 
-import java.awt.Color;
 import java.util.logging.Logger;
 import org.vaadin.artur.icepush.ICEPush;
 
@@ -22,6 +21,7 @@ import de.griffl.proofofconcept.communication.UserLoggedOffEvent;
 import de.griffl.proofofconcept.communication.UserLoggedOffEvent.UserLoggedOffListener;
 
 import de.griffl.proofofconcept.pdf.BlackboardManager;
+import de.griffl.proofofconcept.pdf.Color;
 import de.griffl.proofofconcept.pdf.PDFAnnotation;
 import de.griffl.proofofconcept.pdf.PDFDocument;
 import de.griffl.proofofconcept.presenter.MainWindowPresenter;

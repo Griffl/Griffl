@@ -9,6 +9,7 @@ import org.ektorp.support.CouchDbRepositorySupport;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 
+import de.griffl.proofofconcept.communication.User;
 import de.griffl.proofofconcept.pdf.*;
 
 /**
@@ -33,7 +34,7 @@ public class AnnotationRepository extends CouchDbRepositorySupport<PDFAnnotation
 	@View( name = "max_annotationID", 
 			map = 	"function(doc) {" +
 						"if(doc.type == \"annotation\"){" +
-						"emit(doc.pdfid,doc.annotationID)}" +
+						"emit(doc.pdfid,doc.annotationID);}" +
 					"}",
 			reduce = "function(keys, values){ " +
 						"var max = 0;" +
@@ -52,6 +53,22 @@ public class AnnotationRepository extends CouchDbRepositorySupport<PDFAnnotation
 		v.key(pdfid);
 		ViewResult r = db.queryView(v);
 		return r.getRows().get(0).getValueAsInt();
+	}
+	
+	@View( name = "users_by_pdfdoc", 
+			map = 	"function(doc) {" +
+						"if(doc.type == \"annotation\"){" +
+							"emit([doc.pdfid,doc.user], null);}" +
+					"}"
+		)
+	public List<User> getUseres(String pdfid){
+		ViewQuery v = new ViewQuery();
+		v.viewName("users_by_pdfdoc");
+		v.designDocId("_design/PDFAnnotation"); 
+		v.group(true);
+		v.groupLevel(2);
+		
+		return null;
 	}
 
 }

@@ -14,6 +14,14 @@ public class PDFDocument extends CouchDbDocument {
 	private String type = "pdfdocument";
 	private byte[] document;
 	
+	public void setType(String type){
+		this.type = "pdfdocument";
+	}
+	public String getType(){
+		return type;
+	}
+	
+	
 	@JsonProperty("_id")
 	public String getId() {
 		return id;
