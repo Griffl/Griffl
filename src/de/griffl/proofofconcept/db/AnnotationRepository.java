@@ -55,12 +55,15 @@ public class AnnotationRepository extends CouchDbRepositorySupport<PDFAnnotation
 		return r.getRows().get(0).getValueAsInt();
 	}
 	
-	@View( name = "users_by_pdfdoc", 
-			map = 	"function(doc) {" +
-						"if(doc.type == \"annotation\"){" +
-							"emit([doc.pdfid,doc.user], null);}" +
-					"}"
-		)
+//	@View( name = "users_by_pdfdoc", 
+//			map = 	"function(doc) {" +
+//						"if(doc.type == \"annotation\"){" +
+//							"emit([doc.pdfid,doc.user], null);}" +
+//					"}"
+//			reduce = "function(key, values){" +
+//					"" +
+//					"}"
+//		)
 	public List<User> getUseres(String pdfid){
 		ViewQuery v = new ViewQuery();
 		v.viewName("users_by_pdfdoc");

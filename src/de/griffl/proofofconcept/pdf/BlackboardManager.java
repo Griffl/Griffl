@@ -97,11 +97,9 @@ public enum BlackboardManager implements ChangeListener{
 		pdfRepository.remove(doc);
 		//blackboardManager.remove(doc.getId());
 	}
-	private int getAnnotationID(String pdfID){
-		return 0;
-	}
+	
 	public synchronized void addAnnotation(PDFAnnotation pdfAnno){
-		int annotationID = getAnnotationID(pdfAnno.getPdfid())+1;
+		int annotationID = annotationRepository.getMaxAnnotationID(pdfAnno.getPdfid())+1;
 		pdfAnno.setDateCreated(new Date());
 		pdfAnno.setAnnotationID(annotationID);
 		annotationRepository.add(pdfAnno);
