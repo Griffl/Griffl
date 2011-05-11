@@ -63,7 +63,9 @@ public enum BlackboardManager implements ChangeListener{
 		pdfRepository.add(pdfDoc);
 		
 	}
-	
+	public List<PDFAnnotation> getAnnotations(String pdfID){
+		return annotationRepository.findByPdfid(pdfID);
+	}
 	public synchronized PDFDocument getDocument(String pdfID, ProofofconceptApplication listener){
 		if (pdfRepository.contains(pdfID)){
 			if(blackboardManager.containsKey(pdfID)){
